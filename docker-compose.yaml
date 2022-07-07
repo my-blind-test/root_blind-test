@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    volumes:
+      - ./data:/data/postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+  back:
+    container_name: back
+    restart: always
+    build: ./back_blind-test
+    volumes:
+      - ./back_blind-test:/back_blind-test
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+  front:
+    container_name: front
+    restart: always
+    build: ./front_blind-test
+    volumes:
+      - ./front_blind-test:/front_blind-test
+    ports:
+      - "3000:8000"
+    links:
+      - back
+volumes:
+  postgres:
