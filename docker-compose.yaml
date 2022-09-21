@@ -9,14 +9,16 @@ services:
     ports:
       - "5432:5432"
     environment:
+      POSTGRES_DB: blindtest
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
   back:
     container_name: back
+    env_file: ./back_blind-test/.env
     restart: always
     build: ./back_blind-test
     volumes:
-      - ./back_blind-test:/back_blind-test
+      - ./back_blind-test:/back
     ports:
       - "3000:3000"
     depends_on:
@@ -26,9 +28,9 @@ services:
     restart: always
     build: ./front_blind-test
     volumes:
-      - ./front_blind-test:/front_blind-test
+      - ./front_blind-test:/front
     ports:
-      - "3000:8000"
+      - "8000:3000"
     links:
       - back
 volumes:
